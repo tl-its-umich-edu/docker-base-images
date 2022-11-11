@@ -1,18 +1,22 @@
 #!/usr/bin/env bash
 
 # https://documentation.its.umich.edu/node/2118
-if [ "$(id -u)" -ge 1000 ] ; then
-    sed -e "/^www-data:/c www-data:x:$(id -u):$(id -g):www-data:/var/www:/usr/sbin/nologin" /etc/passwd > /tmp/passwd
-    cat /tmp/passwd > /etc/passwd
-    rm /tmp/passwd
+if [ "$(id -u)" -ge 1000 ]; then
+  sed -e "/^www-data:/c www-data:x:$(id -u):$(id -g):www-data:/var/www:/usr/sbin/nologin" /etc/passwd >/tmp/passwd
+  cat /tmp/passwd >/etc/passwd
+  rm /tmp/passwd
 fi
 
-if [ "${RUN_MIGRATIONS}" = true ] ; then
-    # Run migrations
-    echo "Waiting for DB"
-    while ! php bin/console dbal:run-sql 'SELECT version()' > /dev/null 2>&1; do   
-        echo "Waiting 1 second for database to be available."
-        sleep 1 # wait 1 second before check again
-    done
-    php bin/console doctrine:migrations:migrate --no-interaction
+sed -i -e "s/\(fastcgi_read_timeout\) 180;/\1 ${FASTCGI_READ_TIMEOUT=180};/" \
+  /etc/nginx/sites-available/default
+
+if [ "${RUN_MIGRATIONS}" = true ]; then
+  # Run migrations
+  echo 'Checking for DB readiness...'
+  while ! php bin/console dbal:run-sql 'SELECT version()' >/dev/null 2>&1; do
+    echo 'Waiting 1 second for DB to become ready...'
+    sleep 1 # wait 1 second before checking again
+  done
+  echo 'DB ready.'
+  php bin/console doctrine:migrations:migrate --no-interaction
 fi
