@@ -1,0 +1,48 @@
+
+
+version: '3.9'
+
+services:
+  db:
+    image: mysql:latest
+    volumes:
+      - dbdata:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: udoit3
+      MYSQL_USER: udoit
+      MYSQL_PASSWORD: udoit
+    ports:
+      - "3306:3306"
+    container_name: udoit_db
+  # Uncomment this block and comment the next db block
+  # to use Postgres instead of MySQL
+  # db:
+  #   image: postgres:alpine
+  #   restart: always
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     POSTGRES_USER: udoit
+  #     POSTGRES_PASSWORD: udoit
+  #     POSTGRES_DB: udoit3
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile.umich
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: mysql://udoit:udoit@udoit_db:3306/udoit3
+      APP_ENV: prod
+      APP_LMS: canvas
+      RUN_MIGRATIONS: "true"
+
+    container_name: udoit_php
+    user: 1001320000:10000
+    group_add:
+      - root
+        
+volumes:
+  web:
+  dbdata:
