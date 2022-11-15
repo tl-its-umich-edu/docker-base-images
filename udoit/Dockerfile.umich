@@ -1,21 +1,24 @@
 FROM ghcr.io/ucfopen/udoit:dev-v3-3-1
 
 # https://documentation.its.umich.edu/node/2118
-# RUN useradd -g root -m -s /bin/bash -l -o -u 1000940000 www-data && 
+# RUN useradd -g root -m -s /bin/bash -l -o -u 1000940000 www-data &&
 RUN chmod g+w /etc/passwd
 
-# Update nginx, change access.log
-RUN sed -i 's/\/var\/log\/nginx\/access.log/\/dev\/stdout/g' /etc/nginx/nginx.conf && \
-    # Chang error.log 
-    sed -i 's/\/var\/log\/nginx\/error.log/\/dev\/stdout info/g' /etc/nginx/nginx.conf && \
+# Edit nginx config file in place
+RUN sed -i \
+    # Change access.log
+    -e 's|/var/log/nginx/access.log|/dev/stdout|g' \
+    # Change error.log
+    -e 's|/var/log/nginx/error.log|/dev/stdout info|g' \
     # Change pid location
-    sed -i 's/\/run\/nginx.pid/\/tmp\/nginx.pid/g' /etc/nginx/nginx.conf && \
+    -e 's|/run/nginx.pid|/tmp/nginx.pid|g' /etc/nginx/nginx.conf \
     # Delete user line
-    sed -i '/^user/d' /etc/nginx/nginx.conf
+    -e '/^user/d' /etc/nginx/nginx.conf
 
 # For nginx as non root
 RUN mkdir /var/lib/nginx/body /var/lib/nginx/fastcgi /var/lib/nginx/proxy /var/lib/nginx/uwsgi /var/lib/nginx/scgi && \
-    chown -R root:root /var/lib/nginx/ /var/log/nginx && chmod g+rw -R /var/lib/nginx /var/log/nginx
+    chown -R root:root /var/lib/nginx/ /var/log/nginx && \
+    chmod g+rw -R /var/lib/nginx /var/log/nginx /etc/nginx/sites-available
 
 COPY ./config/entrypoint.sh /etc/entrypoint.sh
 COPY ./config/pre-start.sh /etc/pre-start.sh

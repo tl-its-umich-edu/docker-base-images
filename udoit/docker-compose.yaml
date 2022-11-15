@@ -1,5 +1,3 @@
-
-
 version: '3.9'
 
 services:
@@ -15,17 +13,7 @@ services:
     ports:
       - "3306:3306"
     container_name: udoit_db
-  # Uncomment this block and comment the next db block
-  # to use Postgres instead of MySQL
-  # db:
-  #   image: postgres:alpine
-  #   restart: always
-  #   ports:
-  #     - "5432:5432"
-  #   environment:
-  #     POSTGRES_USER: udoit
-  #     POSTGRES_PASSWORD: udoit
-  #     POSTGRES_DB: udoit3
+
   php:
     build:
       context: .
@@ -37,12 +25,13 @@ services:
       APP_ENV: prod
       APP_LMS: canvas
       RUN_MIGRATIONS: "true"
+      FASTCGI_READ_TIMEOUT: 360
 
     container_name: udoit_php
     user: 1001320000:10000
     group_add:
       - root
-        
+
 volumes:
   web:
   dbdata:
