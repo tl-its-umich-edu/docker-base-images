@@ -19,7 +19,8 @@ RUN sed -i \
 RUN mkdir /var/lib/nginx/body /var/lib/nginx/fastcgi /var/lib/nginx/proxy \
         /var/lib/nginx/uwsgi /var/lib/nginx/scgi /etc/nginx/templates && \
     chown -R root:root /var/lib/nginx/ /var/log/nginx && \
-    chmod g+rw -R /var/lib/nginx /var/log/nginx /etc/nginx/sites-available
+    chmod g+rw -R /var/lib/nginx /var/log/nginx /etc/nginx/sites-available \
+        /etc/nginx/conf.d
 
 COPY ./config/entrypoint.sh /etc/entrypoint.sh
 COPY ./config/pre-start.sh /etc/pre-start.sh
