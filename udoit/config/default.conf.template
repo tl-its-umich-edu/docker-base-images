@@ -1,0 +1,2 @@
+access_log ${NGINX_ACCESS_LOG};
+error_log ${NGINX_ERROR_LOG};
