@@ -12,12 +12,19 @@ FASTCGI_READ_TIMEOUT="${FASTCGI_READ_TIMEOUT=180}"
 NGINX_ACCESS_LOG="${NGINX_ACCESS_LOG=/var/log/nginx/project_access.log}"
 NGINX_ERROR_LOG="${NGINX_ERROR_LOG=/var/log/nginx/project_error.log}"
 
-# substitute values into config file
+# substitute values into config files
 sed -i \
   -e "s|\(fastcgi_read_timeout\).*;|\1 ${FASTCGI_READ_TIMEOUT};|" \
   -e "s|\(access_log\).*;|\1 ${NGINX_ACCESS_LOG};|" \
   -e "s|\(error_log\).*;|\1 ${NGINX_ERROR_LOG};|" \
   /etc/nginx/sites-available/default
+
+sed -i \
+  -e "s|\(access_log\).*;|\1 ${NGINX_ACCESS_LOG};|" \
+  -e "s|\(error_log\).*;|\1 ${NGINX_ERROR_LOG};|" \
+  -e 's|/run/nginx.pid|/tmp/nginx.pid|g' \
+  -e '/^user/d' \
+  /etc/nginx/nginx.conf
 
 if [ "${RUN_MIGRATIONS}" = true ]; then
   # Run migrations
