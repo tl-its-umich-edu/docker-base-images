@@ -7,7 +7,16 @@ if [ "$(id -u)" -ge 1000 ]; then
   rm /tmp/passwd
 fi
 
-sed -i -e "s/\(fastcgi_read_timeout\) 180;/\1 ${FASTCGI_READ_TIMEOUT=180};/" \
+# set default values, in case they weren't specified
+FASTCGI_READ_TIMEOUT="${FASTCGI_READ_TIMEOUT=180}"
+NGINX_ACCESS_LOG="${NGINX_ACCESS_LOG=/var/log/nginx/project_access.log}"
+NGINX_ERROR_LOG="${NGINX_ERROR_LOG=/var/log/nginx/project_error.log}"
+
+# substitute values into config file
+sed -i \
+  -e "s|\(fastcgi_read_timeout\).*;|\1 ${FASTCGI_READ_TIMEOUT};|" \
+  -e "s|\(access_log\).*;|\1 ${NGINX_ACCESS_LOG};|" \
+  -e "s|\(error_log\).*;|\1 ${NGINX_ERROR_LOG};|" \
   /etc/nginx/sites-available/default
 
 if [ "${RUN_MIGRATIONS}" = true ]; then
