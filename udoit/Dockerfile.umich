@@ -4,21 +4,12 @@ FROM ghcr.io/ucfopen/udoit:dev-v3-3-1
 # RUN useradd -g root -m -s /bin/bash -l -o -u 1000940000 www-data &&
 RUN chmod g+w /etc/passwd
 
-# Edit nginx config file in place
-RUN sed -i \
-    # Change access.log
-    -e 's|/var/log/nginx/access.log|/dev/stdout|g' \
-    # Change error.log
-    -e 's|/var/log/nginx/error.log|/dev/stdout info|g' \
-    # Change pid location
-    -e 's|/run/nginx.pid|/tmp/nginx.pid|g' /etc/nginx/nginx.conf \
-    # Delete user line
-    -e '/^user/d' /etc/nginx/nginx.conf
-
 # For nginx as non root
-RUN mkdir /var/lib/nginx/body /var/lib/nginx/fastcgi /var/lib/nginx/proxy /var/lib/nginx/uwsgi /var/lib/nginx/scgi && \
+RUN mkdir /var/lib/nginx/body /var/lib/nginx/fastcgi /var/lib/nginx/proxy \
+        /var/lib/nginx/uwsgi /var/lib/nginx/scgi && \
     chown -R root:root /var/lib/nginx/ /var/log/nginx && \
-    chmod g+rw -R /var/lib/nginx /var/log/nginx /etc/nginx/sites-available
+    chmod g+rw -R /var/lib/nginx /var/log/nginx /etc/nginx/sites-available \
+        /etc/nginx
 
 COPY ./config/entrypoint.sh /etc/entrypoint.sh
 COPY ./config/pre-start.sh /etc/pre-start.sh
