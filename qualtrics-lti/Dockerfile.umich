@@ -3,5 +3,8 @@ FROM ghcr.io/longhornopen/qualtrics-lti:20230215
 # Update lax to none in the session config
 RUN sed -i s/lax/none/ /var/www/html/config/session.php
 
+# Change background color bf5700 (orange) to 00274c (blue)
+RUN sed -i s/background-color:\#bf5700/background-color:\#00274c/g /var/www/html/public/css/app.css
+
 # https://documentation.its.umich.edu/node/2118
 RUN useradd -g root -m -s /bin/bash -l -o -u 1000940000 www-root
