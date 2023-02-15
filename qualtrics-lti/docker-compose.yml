@@ -5,8 +5,6 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile.umich
-    volumes:
-      - ./web:/var/www/html
     environment:
       VIRTUAL_HOST: ${VIRTUAL_HOST:-qualtrics-lti.docker}
       DB_CONNECTION: mysql
@@ -18,12 +16,12 @@ services:
       LOG_CHANNEL: errorlog
       LOG_LEVEL: debug
       SESSION_DRIVER: file
-      LTI13_RSA_PUBLIC_KEY: ${LTI13_RSA_PUBLIC_KEY}
-      LTI13_RSA_PRIVATE_KEY: ${LTI13_RSA_PRIVATE_KEY}
+    env_file:
+      - .env
     links:
       - "mysql:mysql"
     ports:
-      - "80"
+      - "8080:80"
   mysql:
     image: mysql:8
     environment:
