@@ -7,7 +7,7 @@ FROM ghcr.io/longhornopen/canvaspeergrade:20221219
 #RUN sed -i s/lax/none/ /var/www/html/config/session.php
 
 # https://documentation.its.umich.edu/node/2118
-#RUN useradd -g root -m -s /bin/bash -l -o -u 1000940000 www-root
+RUN useradd -g root -m -s /bin/bash -l -o -u 1000940000 www-root
 
 # Expose the new port
 #EXPOSE 8080
