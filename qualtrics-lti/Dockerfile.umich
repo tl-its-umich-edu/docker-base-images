@@ -1,7 +1,11 @@
 FROM ghcr.io/longhornopen/qualtrics-lti:20230215
 
+WORKDIR /var/www/html
 # Update lax to none in the session config
-RUN sed -i s/lax/none/ /var/www/html/config/session.php
+RUN sed -i s/lax/none/ config/session.php
+
+# Copy in our custom.css file
+COPY custom.css public/custom/
 
 # https://documentation.its.umich.edu/node/2118
 RUN useradd -g root -m -s /bin/bash -l -o -u 1000940000 www-root
