@@ -26,6 +26,8 @@ services:
       APP_LMS: canvas
       RUN_MIGRATIONS: "true"
       FASTCGI_READ_TIMEOUT: 360
+      NGINX_ACCESS_LOG: "/dev/stdout"
+      NGINX_ERROR_LOG: "/dev/stdout info"
 
     container_name: udoit_php
     user: 1001320000:10000
