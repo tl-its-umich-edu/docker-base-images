@@ -1,10 +1,4 @@
 FROM ghcr.io/longhornopen/canvaspeergrade:20221219
 
-#RUN sed -i s/"Listen 80"/"Listen 8080"/ /etc/apache2/ports.conf
-#RUN sed -i s/"VirtualHost \*:80"/"VirtualHost \*:8080"/ /etc/apache2/sites-available/000-default.conf
-
-# Update lax to none in the session config
-#RUN sed -i s/lax/none/ /var/www/html/config/session.php
-
 # https://documentation.its.umich.edu/node/2118
 RUN useradd -g root -m -s /bin/bash -l -o -u 1000940000 www-root
