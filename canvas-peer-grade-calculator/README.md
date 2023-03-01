@@ -4,6 +4,8 @@ This project is a deployment wrapper for Longhorn Open Ed Tech's [canvas-peer-gr
 
 Docker uses an image from the project's container package, [canvaspeergrade](https://github.com/longhornopen/canvas-peer-grade-calculator/pkgs/container/canvaspeergrade).
 
+## Run app locally in Docker
+
 1. Copy `.env.sample` to `.env`…
     ```shell
     cp .env.sample .env
@@ -34,4 +36,16 @@ Docker uses an image from the project's container package, [canvaspeergrade](htt
      ```shell
      docker compose exec app php artisan migrate
      ```
-
+5. Access the app at: `https://localhost:8000/`  
+   The OAuth authorization process requires requests directly between Canvas  
+   and the peer grading app.  Therefore, it will probably be necessary to  
+   make the locally running app accessible by Canvas on the web, using a  
+   tool like [Loophole](https://loophole.cloud/).  For example…  
+    ```shell
+    loophole http 8000 --hostname ${USER}-peergrade
+    ```  
+   Then access the app at: `https://YOUR_USERNAME-peergrade.loophole.site`.  
+   Note that the same hostname registered with Loophole must also be used  
+   in…
+   * `APP_URL` in `.env`.
+   * "Redirect URIs" in the Canvas API key.
