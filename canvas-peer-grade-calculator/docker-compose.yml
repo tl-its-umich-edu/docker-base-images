@@ -1,44 +1,28 @@
 version: '3.3'
 
 services:
-  web:
+  app:
     build:
       context: .
       dockerfile: Dockerfile.umich
-    #    volumes:
-    #      - ./web:/var/www/html
-    environment:
-      VIRTUAL_HOST: ${VIRTUAL_HOST:-canvas-peer-grade-calculator.docker}
-      DB_CONNECTION: mysql
-      DB_HOST: mysql
-      DB_PORT: 3306
-      DB_DATABASE: laravel
-      DB_USERNAME: root
-      DB_PASSWORD: root
-      LOG_CHANNEL: errorlog
-      LOG_LEVEL: debug
-      SESSION_DRIVER: file
-    depends_on:
-      - mysql
     env_file:
       - .env
+    depends_on:
+      - db
     links:
-      - "mysql:mysql"
+      - "db:db"
     ports:
       - "8000:80"
-  mysql:
-    # With mysql:8, connecting gives error: "Public Key Retrieval is not allowed"
-    # Could this be a local driver problem?
-    #image: mysql:8
-    image: mysql:5.7
-    environment:
-      MYSQL_DATABASE: laravel
-      MYSQL_ROOT_PASSWORD: root
+    container_name: peer_grading_app
+
+  db:
+    image: mysql:8
+    restart: on-failure
+    command: [ '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci' ]
+    env_file:
+      - .env
     ports:
       - "9306:3306"
     volumes:
-      - mysql-data:/var/lib/mysql
-    #container_name: canvas_peer_grade_calculator_mysql
-
-volumes:
-  mysql-data:
+      - ./.data/mysql:/var/lib/mysql:delegated
+    container_name: peer_grading_db
