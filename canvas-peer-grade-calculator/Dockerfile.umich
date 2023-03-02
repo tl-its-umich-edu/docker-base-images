@@ -2,3 +2,9 @@ FROM ghcr.io/longhornopen/canvaspeergrade:20221219
 
 # https://documentation.its.umich.edu/node/2118
 RUN useradd -g root -m -s /bin/bash -l -o -u 1000940000 www-root
+
+# Copy any local migrations
+COPY migrations/*.php /var/www/html/database/migrations/
+
+# Fix up the files
+RUN chown -R www-data:www-data /var/www/html
