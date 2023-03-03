@@ -1,0 +1,28 @@
+version: '3.3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.umich
+    env_file:
+      - .env
+    depends_on:
+      - db
+    #links:
+      #- "db:db"
+    ports:
+      - "8000:80"
+    container_name: peer_grading_app
+
+  db:
+    image: mysql:8
+    restart: on-failure
+    command: [ '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci' ]
+    env_file:
+      - .env
+    ports:
+      - "9306:3306"
+    volumes:
+      - ./.data/mysql:/var/lib/mysql:delegated
+    container_name: peer_grading_db
