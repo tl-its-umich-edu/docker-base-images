@@ -37,7 +37,7 @@ Docker uses an image from the project's container package,
    > error messages about the missing database tables.  Clicking the green
    > "RUN MIGRATIONS" button on that page will also apply the migrations.
 5. ### Host the app
-   By default, the app is available at `https://localhost:8000/`. However, the
+   By default, the app is available at `https://localhost:8000/`.  However, the
    OAuth authorization process requires direct requests between Canvas and the
    peer grading app.  Therefore, it will probably be necessary to make the
    locally running app accessible to Canvas on the web using a tool
@@ -57,5 +57,5 @@ Docker uses an image from the project's container package,
 6. ### Access the app
    Requesting the root URL of the local app server will start the authorization
    process with Canvas.  Canvas will ask for the app to be authorized to work
-   with the user's account.  Once authorized, the app will show a list of Canvas
-   courses they can access.
+   with the user's account.  Once authorized, the app will show a list of
+   Canvas courses they can access.
