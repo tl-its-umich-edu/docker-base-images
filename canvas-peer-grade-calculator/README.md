@@ -29,7 +29,7 @@ Docker uses an image from the project's container package,
    The following DB migration needs to be applied manually until it can be
    added to the Docker process and be applied automatically.
     ```shell
-    docker compose exec app php artisan migrate -n --force
+    docker exec peer_grading_app php artisan migrate -n --force
     ```
 
    > 💡 Alternatively, if the app is running in debug mode and it is accessed
