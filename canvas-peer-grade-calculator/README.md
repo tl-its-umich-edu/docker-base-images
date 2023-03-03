@@ -6,22 +6,22 @@ Docker uses an image from the project's container package, [canvaspeergrade](htt
 
 ## Run app locally in Docker
 
-1. **Create `.env`.**  
+1. ### Create `.env`
    Copy `.env.sample` to `.env`…
     ```shell
     cp .env.sample .env
     ```
-2. **Edit `.env`.**  
+2. ### Edit `.env`
    Edit the contents of`.env`, using the comments therein as a guide.
    Additional information can be found in Longhorn's
    [README.md](https://github.com/longhornopen/canvas-peer-grade-calculator/blob/6a2ece08b61a16a28f57d841a0399ca99081cbf4/README.md)
    for their project.
-3. **Start the app.**  
+3. ### Start the app
    Use Docker's `compose` to start the app and db containers…
     ```shell
     docker compose up --build
     ```
-4. **_(Temporary)_ Apply DB migrations.**  
+4. ### _(Temporary)_ Apply DB migrations  
     The following DB migration needs to be applied manually until it can be
     added to the Docker process and be applied automatically.  
     ```shell
@@ -31,7 +31,7 @@ Docker uses an image from the project's container package, [canvaspeergrade](htt
    > before the migrations are applied, the app will show a page with
    > error messages about the missing database tables.  Clicking the green 
    > "RUN MIGRATIONS" button on that page will also apply the migrations.
-5. **Host the app.**  
+5. ### Host the app
    By default, the app is available at `https://localhost:8000/`. 
    However, the OAuth authorization process requires direct requests between 
    Canvas and the peer grading app.  Therefore, it will probably be necessary 
@@ -48,7 +48,7 @@ Docker uses an image from the project's container package, [canvaspeergrade](htt
    > 💡 Typically, this hosting can be activated at any time, even before the
    > app is running.  It can also be allowed to continue running while the
    > app is stopped, making it easier for debugging or configuration changes.
-6. **Access the app.**  
+6. ### Access the app
    Requesting the root URL of the local app server will start the 
    authorization process with Canvas.  Canvas will ask for the app to be 
    authorized to work with the user's account.  Once authorized, the app 
