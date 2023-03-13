@@ -2,3 +2,10 @@ FROM ghcr.io/longhornopen/canvaspeergrade:20230306
 
 # https://documentation.its.umich.edu/node/2118
 RUN useradd -g root -m -s /bin/bash -l -o -u 1000940000 www-root
+
+# Change Apache config to use non-privileged port, 8080
+RUN sed -i 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf
+RUN sed -i 's/VirtualHost \*:80/VirtualHost *:8080/' /etc/apache2/sites-available/000-default.conf
+
+# Expose the new port
+EXPOSE 8080
