@@ -9,8 +9,6 @@ services:
       - .env
     depends_on:
       - db
-    #links:
-      #- "db:db"
     ports:
       - "8000:8080"
     container_name: peer_grading_app
