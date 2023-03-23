@@ -1,11 +1,13 @@
 FROM ghcr.io/longhornopen/qualtrics-lti:20230215
 
-WORKDIR /var/www/html
-# Update lax to none in the session config
-RUN sed -i s/lax/none/ config/session.php
+WORKDIR /var/www/html/public
+
+# Add our .htaccess into the one there
+COPY .htaccess.append .
+RUN cat .htaccess.append >> .htaccess && rm .htaccess.append
 
 # Copy in our custom.css file
-COPY custom.css public/custom/
+COPY custom.css custom/
 
 # https://documentation.its.umich.edu/node/2118
 RUN useradd -g root -m -s /bin/bash -l -o -u 1000940000 www-root
@@ -13,6 +15,9 @@ RUN useradd -g root -m -s /bin/bash -l -o -u 1000940000 www-root
 # Change Apache config to use non-privileged port, 8080
 RUN sed -i 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf
 RUN sed -i 's/VirtualHost \*:80/VirtualHost *:8080/' /etc/apache2/sites-available/000-default.conf
+
+# Fix up ownership again
+RUN chown -R www-data:www-data /var/www/html
 
 # Expose the new port
 EXPOSE 8080
