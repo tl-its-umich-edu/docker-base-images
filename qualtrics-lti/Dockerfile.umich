@@ -1,13 +1,13 @@
 FROM ghcr.io/longhornopen/qualtrics-lti:20230215
 
-WORKDIR /var/www/html/public
+WORKDIR /var/www/html/
 
 # Add our .htaccess into the one there
 COPY .htaccess.append .
-RUN cat .htaccess.append >> .htaccess && rm .htaccess.append
+RUN cat .htaccess.append >> public/.htaccess && rm .htaccess.append
 
 # Copy in our custom.css file
-COPY custom.css custom/
+COPY custom.css public/custom/
 
 # https://documentation.its.umich.edu/node/2118
 RUN useradd -g root -m -s /bin/bash -l -o -u 1000940000 www-root
