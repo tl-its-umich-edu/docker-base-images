@@ -16,6 +16,12 @@ RUN useradd -g root -m -s /bin/bash -l -o -u 1000940000 www-root
 RUN sed -i 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf
 RUN sed -i 's/VirtualHost \*:80/VirtualHost *:8080/' /etc/apache2/sites-available/000-default.conf
 
+# Add AllowOverride All to the config
+RUN sed -i '/<\/VirtualHost>/i <Directory /var/www/html/public>\nAllowOverride All\n</Directory>' /etc/apache2/sites-available/000-default.conf
+
+#Enable headers in apache2
+RUN a2enmod headers
+
 # Fix up ownership again
 RUN chown -R www-data:www-data /var/www/html
 
