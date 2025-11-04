@@ -1,4 +1,4 @@
-FROM ghcr.io/longhornopen/canvaspeergrade:20230306
+FROM ghcr.io/longhornopen/canvaspeergrade:20230418
 
 # https://documentation.its.umich.edu/node/2118
 RUN useradd -g root -m -s /bin/bash -l -o -u 1000940000 www-root
