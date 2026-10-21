@@ -1,4 +1,4 @@
-FROM ghcr.io/longhornopen/qualtrics-lti:20260812
+FROM ghcr.io/longhornopen/qualtrics-lti:20261021
 
 WORKDIR /var/www/html
 # Update lax to none in the session config
